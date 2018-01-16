@@ -1,0 +1,119 @@
+New Line = vbCrLf
+Body type = column 3
+GVM = column 7
+
+Sub FindBodyTypes()
+    Dim rowCount, i As Long, s(1 To 50), output As String, j As Integer
+        
+    rowCount = Worksheets(1).UsedRange.Rows.Count
+    j = 1
+    s(j) = Cells(2, 3).Value
+        
+    For i = 3 To rowCount
+        If Cells(i, 3).Value <> s(j) Then
+            j = j + 1
+            s(j) = Cells(i, 3).Value
+        End If
+    Next
+    
+    For i = 1 To j
+        output = output + s(i) + vbCrLf
+    Next
+    MsgBox output
+End Sub
+
+Sub FindAndCountRows()
+    Dim rowCount, i As Long, j, k As Integer, s As String
+    Dim lightVehicles(1 To 11) As String
+    lightVehicles(1) = "CAB AND CHASSIS ONLY"
+    lightVehicles(2) = "CONVERTIBLE"
+    lightVehicles(3) = "HATCHBACK"
+    lightVehicles(4) = "HEAVY VAN"
+    lightVehicles(5) = "LIGHT VAN"
+    lightVehicles(6) = "MINIBUS"
+    lightVehicles(7) = "SALOON"
+    lightVehicles(8) = "SELF PROPELLED CARAVAN"
+    lightVehicles(9) = "SPORTS CAR"
+    lightVehicles(10) = "STATION WAGON"
+    lightVehicles(11) = "UTILITY"
+    
+    rowCount = Worksheets(1).UsedRange.Rows.Count
+    j = 0
+    
+    For i = 1 To rowCount
+        For k = 1 To 11
+            s = lightVehicles(k)
+            If (Cells(i, 3).Value) = s Then
+                If (s = lightVehicles(1) Or s = lightVehicles(4)) Then
+                    If (Cells(i, 7).Value < 3501) Then
+						j = j + 1
+                    End If
+                Else
+					j = j + 1
+                End If
+            End If
+        Next
+    Next
+	MsgBox j
+End Sub
+
+Sub CopyRowsLight()
+    Dim rowCount, i, j As Long, k As Integer, s As String
+    Dim vehicles(1 To 11) As String
+    vehicles(1) = "CAB AND CHASSIS ONLY"
+    vehicles(2) = "CONVERTIBLE"
+    vehicles(3) = "HATCHBACK"
+    vehicles(4) = "HEAVY VAN"
+    vehicles(5) = "LIGHT VAN"
+    vehicles(6) = "MINIBUS"
+    vehicles(7) = "SALOON"
+    vehicles(8) = "SELF PROPELLED CARAVAN"
+    vehicles(9) = "SPORTS CAR"
+    vehicles(10) = "STATION WAGON"
+    vehicles(11) = "UTILITY"
+    
+    rowCount = Worksheets(1).UsedRange.Rows.Count
+    j = 1
+    
+    For i = 1 To rowCount
+        For k = 1 To 11
+            s = vehicles(k)
+            If (Worksheets(1).Cells(i, 3).Value = s) Then
+                If (Worksheets(1).Cells(i, 7).Value < 3501) Then
+                    j = j + 1
+                    Range(("A" & i), ("AF" & i)).Copy
+                    ActiveSheet.Paste Destination:=Worksheets(2).Range(("A" & j), ("AF" & j))
+                End If
+            End If
+        Next
+    Next
+End Sub
+
+Sub CopyRowsHeavy()
+    Dim rowCount, i, j As Long, k As Integer, s As String
+    Dim vehicles(1 To 8) As String
+    vehicles(1) = "ARTICULATED TRUCK"
+    vehicles(2) = "CAB AND CHASSIS ONLY"
+    vehicles(3) = "HEAVY VAN"
+    vehicles(4) = "SERVICE COACH"
+    vehicles(5) = "FLAT-DECK TRUCK"
+    vehicles(6) = "OTHER TRUCK"
+    vehicles(7) = "SELF PROPELLED CARAVAN"
+    vehicles(8) = "UTILITY"
+    
+    rowCount = Worksheets(1).UsedRange.Rows.Count
+    j = 1
+    
+    For i = 1 To rowCount
+        For k = 1 To 8
+            s = vehicles(k)
+            If (Worksheets(1).Cells(i, 3).Value = s) Then
+                If (Worksheets(1).Cells(i, 7).Value > 3500) Then
+                    j = j + 1
+                    Range(("A" & i), ("AF" & i)).Copy
+                    ActiveSheet.Paste Destination:=Worksheets(2).Range(("A" & j), ("AF" & j))
+                End If
+            End If
+        Next
+    Next
+End Sub
