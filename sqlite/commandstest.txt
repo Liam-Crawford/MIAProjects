@@ -1,0 +1,3 @@
+.read tools/begin.sql
+.mode csv
+.import test.csv t
